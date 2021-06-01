@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <androidx.cardview.widget.CardView
@@ -13,22 +13,23 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginBottom="15dp"
+            android:layout_marginBottom="20dp"
             android:layout_marginTop="15dp"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:orientation="vertical">
 
-        <com.mikhaellopez.circularimageview.CircularImageView
-            android:layout_width="165dp"
-            android:layout_height="150dp"
-            android:layout_gravity="center"
-            android:layout_marginTop="15dp"
-            app:civ_border_color="@color/whiteCardColor"
-            app:civ_border_width="1dp"
-            app:civ_shadow="true"
-            app:civ_shadow_color="@color/whiteCardColor"
-            app:civ_shadow_radius="1dp" />
+            <com.mikhaellopez.circularimageview.CircularImageView
+                android:id="@+id/image_crew"
+                android:layout_width="175dp"
+                android:layout_height="150dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                app:civ_border_color="@color/whiteCardColor"
+                app:civ_border_width="1dp"
+                app:civ_shadow="true"
+                app:civ_shadow_color="@color/whiteCardColor"
+                app:civ_shadow_radius="1dp" />
 
 
             <com.google.android.material.textfield.TextInputLayout
@@ -37,7 +38,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="25dp"
                 android:layout_marginRight="20dp"
                 app:boxStrokeColor="@color/black"
                 app:boxBackgroundColor="@color/azure"

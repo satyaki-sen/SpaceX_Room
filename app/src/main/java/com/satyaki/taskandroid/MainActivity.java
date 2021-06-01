@@ -3,6 +3,8 @@ package com.satyaki.taskandroid;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
 
 import android.os.AsyncTask;
@@ -23,22 +25,35 @@ import retrofit2.http.Path;
 
 public class MainActivity extends AppCompatActivity {
 
-    List<Users> usersList;
+    List<Users> userDetails;
     UserDao userDao;
     UserViewModel userViewModel;
+    RecyclerView recyclerView;
+    LinearLayoutManager layoutManager;
+    UserDetailsAdapter userDetailsAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        recyclerView=findViewById(R.id.recycler_main);
+
+        layoutManager=new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
 
         userViewModel= new ViewModelProvider(this).get(UserViewModel.class);
         userViewModel.getAllUsers().observe(this, new Observer<List<Users>>() {
             @Override
             public void onChanged(List<Users> usersList) {
                 Log.i("Hello ",usersList.get(0).getImage());
+                userDetails=usersList;
+                userDetailsAdapter=new UserDetailsAdapter(userDetails,MainActivity.this);
+                recyclerView.setAdapter(userDetailsAdapter);
             }
         });
+
+       // userDetailsAdapter=new UserDetailsAdapter(userDetails,this);
+        //recyclerView.setAdapter(userDetailsAdapter);
 
 
   //      AppDatabase db=AppDatabase.getInstance(this);
