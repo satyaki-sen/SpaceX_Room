@@ -18,18 +18,18 @@ import io.reactivex.rxjava3.core.Completable;
 public interface UserDao {
 
     @Query("SELECT * FROM crew_table")
-    public List<Users> getUsers();
+    public LiveData<List<Users>> getUsers();
 
     @Insert
-    void insertUser(Users user);
+    public Completable insertUser(Users user);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     public Completable insertAll(List<Users> usersList);
 
     @Delete
-    void deleteUser(Users user);
+    public Completable deleteUser(Users user);
 
     @Query("DELETE FROM crew_table")
-    void deleteTable();
+    public Completable deleteTable();
 
 }
