@@ -3,11 +3,14 @@ package com.satyaki.taskandroid;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.room.Room;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -19,6 +22,9 @@ import retrofit2.http.Path;
 
 public class MainActivity extends AppCompatActivity {
 
+    List<Users> usersList;
+    UserDao userDao;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
 
         AppDatabase db=AppDatabase.getInstance(this);
 
-        UserDao userDao = db.userDao();
+        userDao = db.userDao();
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://api.spacexdata.com/v4/")
@@ -37,22 +43,16 @@ public class MainActivity extends AppCompatActivity {
         GitHubService service = retrofit.create(GitHubService.class);
         Call<List<Users>> repos = service.listRepos();
 
+
+
        repos.enqueue(new Callback<List<Users>>() {
            @Override
            public void onResponse(Call<List<Users>> call, Response<List<Users>> response) {
 
-               List<Users> usersList=response.body();
-
-               int i=0;
-               for(Users user:usersList){
-                   Log.i("User",user.getName());
-                   i+=1;
-                   userDao.insertUser(user);
-                   if(i==usersList.size()){
-                       Toast.makeText(MainActivity.this, "Done..", Toast.LENGTH_SHORT).show();
-                   }
-               }
-
+               usersList=response.body();
+               userDao.insertAll(usersList);
+               See see=new See();
+               see.execute();
            }
 
            @Override
@@ -66,6 +66,17 @@ public class MainActivity extends AppCompatActivity {
     public interface GitHubService {
         @GET("crew")
         Call<List<Users>> listRepos();
+    }
+
+
+    public class See extends AsyncTask<Void,Void,Void>{
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+
+            Log.i("Hello",userDao.getUsers().get(0).getName());
+            return null;
+        }
     }
 
 }
