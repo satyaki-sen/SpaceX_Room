@@ -20,7 +20,7 @@ public interface UserDao {
     @Query("SELECT * FROM crew_table")
     public LiveData<List<Users>> getUsers();
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     public Completable insertUser(Users user);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
