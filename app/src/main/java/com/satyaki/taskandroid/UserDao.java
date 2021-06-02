@@ -26,6 +26,9 @@ public interface UserDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     public Completable insertAll(List<Users> usersList);
 
+    @Query("SELECT COUNT(*) AS RowCnt FROM crew_table")
+    public Completable checkTableEmpty();
+
     @Delete
     public Completable deleteUser(Users user);
 

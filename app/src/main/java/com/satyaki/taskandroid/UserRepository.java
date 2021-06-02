@@ -41,6 +41,7 @@ public class UserRepository {
       userDao.deleteTable();
    }
 
+
    public MutableLiveData<List<Users>> getUsersREST(){
 
       usersDetailsAPI=new MutableLiveData<>();

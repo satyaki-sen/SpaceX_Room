@@ -25,23 +25,11 @@ import retrofit2.http.Path;
 
 public class MainActivity extends AppCompatActivity {
 
-    List<Users> userDetails;
-    UserDao userDao;
-    UserViewModel userViewModel;
-    RecyclerView recyclerView;
-    LinearLayoutManager layoutManager;
-    UserDetailsAdapter userDetailsAdapter;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        recyclerView=findViewById(R.id.recycler_main);
 
-        layoutManager=new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(layoutManager);
-
-        userViewModel= new ViewModelProvider(this).get(UserViewModel.class);
       /*  userViewModel.getAllUsers().observe(this, new Observer<List<Users>>() {
             @Override
             public void onChanged(List<Users> usersList) {
@@ -51,16 +39,6 @@ public class MainActivity extends AppCompatActivity {
                 recyclerView.setAdapter(userDetailsAdapter);
             }
         });*/
-
-        userViewModel.getListUserDetailsAPI().observe(this, new Observer<List<Users>>() {
-            @Override
-            public void onChanged(List<Users> usersList) {
-                userDetails=usersList;
-                userDetailsAdapter=new UserDetailsAdapter(userDetails,MainActivity.this);
-                recyclerView.setAdapter(userDetailsAdapter);
-            }
-        });
-
 
         }
 

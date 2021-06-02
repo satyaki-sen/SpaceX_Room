@@ -1,6 +1,9 @@
 package com.satyaki.taskandroid;
 
 import android.app.Application;
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -29,6 +32,14 @@ public class UserViewModel extends AndroidViewModel {
     public void deleteAll(){
 
         userRepository.deleteDataUsers();
+    }
+
+    public boolean hasNetwork(){
+
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager)getApplication().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
     public LiveData<List<Users>> getAllUsers(){
