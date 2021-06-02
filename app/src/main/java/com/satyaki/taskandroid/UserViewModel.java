@@ -17,6 +17,8 @@ public class UserViewModel extends AndroidViewModel {
     private UserRepository userRepository;
     private LiveData<List<Users>> listUsers;
     private MutableLiveData<List<Users>> listUserDetailsAPI;
+    private MutableLiveData<Boolean> booleanMutableLiveData;
+    private Boolean bool;
 
     public UserViewModel(@NonNull Application application) {
         super(application);
@@ -25,25 +27,15 @@ public class UserViewModel extends AndroidViewModel {
     }
 
     public void insertUsersAll(List<Users> list){
-
         userRepository.insertDataUsersAll(list);
     }
 
     public void deleteAll(){
-
         userRepository.deleteDataUsers();
     }
 
-    public boolean hasNetwork(){
-
-        ConnectivityManager connectivityManager
-                = (ConnectivityManager)getApplication().getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
-    }
 
     public LiveData<List<Users>> getAllUsers(){
-
         return listUsers;
     }
 
@@ -52,5 +44,6 @@ public class UserViewModel extends AndroidViewModel {
         listUserDetailsAPI=userRepository.getUsersREST();
         return listUserDetailsAPI;
     }
+
 
 }

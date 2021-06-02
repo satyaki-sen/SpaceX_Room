@@ -6,6 +6,7 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -17,6 +18,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
 
@@ -28,7 +32,7 @@ public class HomeFragment extends Fragment {
     RecyclerView recyclerView;
     LinearLayoutManager layoutManager;
     UserDetailsAdapter userDetailsAdapter;
-    Button refresh,delete;
+    FloatingActionButton refresh,delete;
     TextView textEmpty;
 
     @Override
@@ -46,7 +50,8 @@ public class HomeFragment extends Fragment {
 
         userViewModel= new ViewModelProvider(getActivity()).get(UserViewModel.class);
 
-        if(userViewModel.hasNetwork()){
+        if(hasNetwork()){
+            Toast.makeText(getActivity(), "Online..", Toast.LENGTH_SHORT).show();
             retrieveREST();
         }
         else{
@@ -56,7 +61,10 @@ public class HomeFragment extends Fragment {
         refresh.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Toast.makeText(getActivity(), "Refresh", Toast.LENGTH_SHORT).show();
                 //Deletes data from Room Database
+                textEmpty.setVisibility(View.GONE);
+                recyclerView.setVisibility(View.VISIBLE);
                 userViewModel.deleteAll();
                 retrieveREST();//Fetch data from REST APIs..
             }
@@ -65,7 +73,10 @@ public class HomeFragment extends Fragment {
         delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Toast.makeText(getActivity(), "Delete", Toast.LENGTH_SHORT).show();
                 userViewModel.deleteAll(); //Deletes the entire Data from the Room Database
+                recyclerView.setVisibility(View.GONE);
+                textEmpty.setVisibility(View.VISIBLE);
             }
         });
 
@@ -76,19 +87,21 @@ public class HomeFragment extends Fragment {
     public void retrieveRoom(){
 
         userViewModel.getAllUsers().observe(getActivity(), new Observer<List<Users>>() {
+
             @Override
             public void onChanged(List<Users> usersList) {
 
-               if(!usersList.isEmpty()) {
-                   userDetails = usersList;
-                   userDetailsAdapter = new UserDetailsAdapter(userDetails, getActivity());
-                   recyclerView.setAdapter(userDetailsAdapter);
+                recyclerView.setVisibility(View.VISIBLE);
+                userDetails = usersList;
+                Log.i("Chek",userDetails.get(0).getName());
+                userDetailsAdapter = new UserDetailsAdapter(userDetails, getActivity());
+                 //  userDetailsAdapter.notifyDataSetChanged();
+
+                recyclerView.setAdapter(userDetailsAdapter);
+                userDetailsAdapter.notifyDataSetChanged();
                    textEmpty.setVisibility(View.GONE);
-               }
-               else{
-                    recyclerView.setVisibility(View.GONE);
-                    textEmpty.setVisibility(View.VISIBLE);
-               }
+
+
             }
         });
     }
@@ -99,10 +112,22 @@ public class HomeFragment extends Fragment {
         userViewModel.getListUserDetailsAPI().observe(getActivity(), new Observer<List<Users>>() {
             @Override
             public void onChanged(List<Users> usersList) {
+
+                textEmpty.setVisibility(View.GONE);
                 userDetails=usersList;
                 userDetailsAdapter=new UserDetailsAdapter(userDetails,getContext());
                 recyclerView.setAdapter(userDetailsAdapter);
             }
         });
     }
+
+
+    public Boolean hasNetwork(){
+
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager)getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+
 }

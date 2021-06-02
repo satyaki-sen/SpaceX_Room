@@ -8,16 +8,17 @@
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.satyaki.taskandroid.HomeFragment"
-        android:label="Home"
+        android:label="fragment_home"
         tools:layout="@layout/fragment_home">
         <action
             android:id="@+id/action_homeFragment_to_wikiFragment"
             app:destination="@id/wikiFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/wikiFragment"
         android:name="com.satyaki.taskandroid.WikiFragment"
-        android:label="Wikipedia"
+        android:label="fragment_wikipedia"
         tools:layout="@layout/fragment_wiki">
         <action
             android:id="@+id/action_wikiFragment_to_homeFragment"

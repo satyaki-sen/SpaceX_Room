@@ -8,15 +8,19 @@ android {
 
     defaultConfig {
         applicationId "com.satyaki.taskandroid"
-        minSdkVersion 26
+        minSdkVersion 23
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        signingConfig signingConfigs.debug
     }
 
     buildTypes {
+        debug {
+            signingConfig signingConfigs.debug
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
@@ -61,6 +65,7 @@ dependencies {
     implementation "androidx.cardview:cardview:1.0.0"
     implementation 'com.mikhaellopez:circularimageview:4.2.0'
     implementation 'com.squareup.picasso:picasso:2.71828'
-
+    implementation 'androidx.navigation:navigation-fragment:2.3.5'
+    implementation 'androidx.navigation:navigation-ui:2.3.5'
 
 }

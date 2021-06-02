@@ -3,6 +3,8 @@ package com.satyaki.taskandroid;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
@@ -25,21 +27,14 @@ import retrofit2.http.Path;
 
 public class MainActivity extends AppCompatActivity {
 
+    NavController navController;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-      /*  userViewModel.getAllUsers().observe(this, new Observer<List<Users>>() {
-            @Override
-            public void onChanged(List<Users> usersList) {
-                Log.i("Hello ",usersList.get(0).getImage());
-                userDetails=usersList;
-                userDetailsAdapter=new UserDetailsAdapter(userDetails,MainActivity.this);
-                recyclerView.setAdapter(userDetailsAdapter);
-            }
-        });*/
+        navController= Navigation.findNavController(this,R.id.nav_host_fragment);
 
-        }
-
+    }
 }

@@ -5,7 +5,7 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName = "crew_table")
+@Entity(tableName = "crw_table")
 class Users {
 
     @PrimaryKey @NonNull
@@ -20,7 +20,6 @@ class Users {
     private String wikipedia;
 
     private String status;
-
 
 
     public Users(String id, String name, String agency, String image, String wikipedia, String status) {

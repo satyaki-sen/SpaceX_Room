@@ -1,6 +1,7 @@
 package com.satyaki.taskandroid;
 
 import android.app.Application;
+import android.os.AsyncTask;
 import android.util.Log;
 
 import androidx.lifecycle.LiveData;
@@ -8,6 +9,8 @@ import androidx.lifecycle.MutableLiveData;
 
 import java.util.List;
 
+import io.reactivex.rxjava3.annotations.NonNull;
+import io.reactivex.rxjava3.observers.DisposableCompletableObserver;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -18,17 +21,23 @@ public class UserRepository {
   private LiveData<List<Users>> allUsers;
   private MutableLiveData<List<Users>> usersDetailsAPI;
   private Networking networking;
+  private List<Users> lists;
 
   public UserRepository(Application application){
+
      AppDatabase appDatabase=AppDatabase.getInstance(application);
+     Log.i("Chk",appDatabase.toString());
      userDao=appDatabase.userDao();
+     Log.i("Ck",userDao.toString());
      allUsers=userDao.getUsers();
      networking=RetrofitService.createService().create(Networking.class);
   }
 
   public void insertDataUsersAll(List<Users> list){
 
-      userDao.insertAll(list);
+      lists=list;
+      UserIns userIns=new UserIns();
+      userIns.execute("");
   }
 
    public LiveData<List<Users>> getAllUsers(){
@@ -68,6 +77,21 @@ public class UserRepository {
       });
 
       return usersDetailsAPI;
+   }
+
+   public class UserIns extends AsyncTask<String,String,String>{
+
+       @Override
+       protected String doInBackground(String... strings) {
+           userDao.insertAll(lists);
+           return null;
+       }
+
+       @Override
+       protected void onPostExecute(String s) {
+           super.onPostExecute(s);
+           Log.i("LOG","Done");
+       }
    }
 
 }
