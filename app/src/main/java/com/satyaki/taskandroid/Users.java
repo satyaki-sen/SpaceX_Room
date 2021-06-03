@@ -5,10 +5,11 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName = "crw_table")
+@Entity(tableName = "crew_table")
 class Users {
 
-    @PrimaryKey @NonNull
+    @PrimaryKey
+    @NonNull
     private String id;
 
     private String name;

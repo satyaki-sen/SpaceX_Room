@@ -50,27 +50,24 @@ public class HomeFragment extends Fragment {
 
         userViewModel= new ViewModelProvider(getActivity()).get(UserViewModel.class);
 
-        if(hasNetwork()){
-            Toast.makeText(getActivity(), "Online..", Toast.LENGTH_SHORT).show();
-            retrieveREST();
-        }
-        else{
-            retrieveRoom();
-        }
+        retrieveREST();
+       // retrieveRoom();
 
         refresh.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(getActivity(), "Refresh", Toast.LENGTH_SHORT).show();
                 //Deletes data from Room Database
+
+                retrieveRoom();
                 textEmpty.setVisibility(View.GONE);
                 recyclerView.setVisibility(View.VISIBLE);
-                userViewModel.deleteAll();
-                retrieveREST();//Fetch data from REST APIs..
+                //userViewModel.deleteAll();
+                //retrieveREST();//Fetch data from REST APIs..
             }
         });
 
-        delete.setOnClickListener(new View.OnClickListener() {
+       /* delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(getActivity(), "Delete", Toast.LENGTH_SHORT).show();
@@ -78,7 +75,7 @@ public class HomeFragment extends Fragment {
                 recyclerView.setVisibility(View.GONE);
                 textEmpty.setVisibility(View.VISIBLE);
             }
-        });
+        });*/
 
         return view;
     }
@@ -93,14 +90,13 @@ public class HomeFragment extends Fragment {
 
                 recyclerView.setVisibility(View.VISIBLE);
                 userDetails = usersList;
-                Log.i("Chek",userDetails.get(0).getName());
-                userDetailsAdapter = new UserDetailsAdapter(userDetails, getActivity());
-                 //  userDetailsAdapter.notifyDataSetChanged();
+                Log.i("Chek",usersList.get(0).getName());
+                userDetailsAdapter = new UserDetailsAdapter(usersList, getActivity());
+                //userDetailsAdapter.notifyDataSetChanged();
 
                 recyclerView.setAdapter(userDetailsAdapter);
                 userDetailsAdapter.notifyDataSetChanged();
-                   textEmpty.setVisibility(View.GONE);
-
+                textEmpty.setVisibility(View.GONE);
 
             }
         });
@@ -113,10 +109,11 @@ public class HomeFragment extends Fragment {
             @Override
             public void onChanged(List<Users> usersList) {
 
+                Toast.makeText(getActivity(), "Retrieve..", Toast.LENGTH_SHORT).show();
                 textEmpty.setVisibility(View.GONE);
-                userDetails=usersList;
-                userDetailsAdapter=new UserDetailsAdapter(userDetails,getContext());
-                recyclerView.setAdapter(userDetailsAdapter);
+               // userDetails=usersList;
+             // userDetailsAdapter=new UserDetailsAdapter(userDetails,getContext());
+                //recyclerView.setAdapter(userDetailsAdapter);
             }
         });
     }

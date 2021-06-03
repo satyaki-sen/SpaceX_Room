@@ -10,6 +10,8 @@ import androidx.lifecycle.MutableLiveData;
 import java.util.List;
 
 import io.reactivex.rxjava3.annotations.NonNull;
+import io.reactivex.rxjava3.core.CompletableObserver;
+import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.observers.DisposableCompletableObserver;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -29,19 +31,39 @@ public class UserRepository {
      Log.i("Chk",appDatabase.toString());
      userDao=appDatabase.userDao();
      Log.i("Ck",userDao.toString());
-     allUsers=userDao.getUsers();
+    // allUsers=userDao.getUsers();
      networking=RetrofitService.createService().create(Networking.class);
   }
 
   public void insertDataUsersAll(List<Users> list){
 
+      Log.i("OK","Good Recieve.");
+
       lists=list;
-      UserIns userIns=new UserIns();
-      userIns.execute("");
+      InsertData insertData=new InsertData();
+      insertData.execute("");
+
+      /* userDao.insertAll(list).subscribeWith(new CompletableObserver() {
+         @Override
+         public void onSubscribe(@NonNull Disposable d) {
+
+         }
+
+         @Override
+         public void onComplete() {
+            Log.i("OK","Good");
+         }
+
+         @Override
+         public void onError(@NonNull Throwable e) {
+            e.printStackTrace();
+         }
+     });*/
   }
 
    public LiveData<List<Users>> getAllUsers(){
 
+      allUsers=userDao.getUsers();
       return allUsers;
    }
 
@@ -79,19 +101,26 @@ public class UserRepository {
       return usersDetailsAPI;
    }
 
-   public class UserIns extends AsyncTask<String,String,String>{
+   public class InsertData extends AsyncTask<String,String,String>{
 
        @Override
        protected String doInBackground(String... strings) {
-           userDao.insertAll(lists);
+           try {
+               userDao.insertAll(lists);
+           }
+           catch (Exception e){
+               e.printStackTrace();
+           }
            return null;
        }
 
        @Override
        protected void onPostExecute(String s) {
            super.onPostExecute(s);
-           Log.i("LOG","Done");
+
        }
    }
+
+
 
 }

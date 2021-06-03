@@ -17,8 +17,6 @@ public class UserViewModel extends AndroidViewModel {
     private UserRepository userRepository;
     private LiveData<List<Users>> listUsers;
     private MutableLiveData<List<Users>> listUserDetailsAPI;
-    private MutableLiveData<Boolean> booleanMutableLiveData;
-    private Boolean bool;
 
     public UserViewModel(@NonNull Application application) {
         super(application);
@@ -26,20 +24,24 @@ public class UserViewModel extends AndroidViewModel {
         listUsers=userRepository.getAllUsers();
     }
 
-    public void insertUsersAll(List<Users> list){
+   /* public void insertUsersAll(List<Users> list){
+
         userRepository.insertDataUsersAll(list);
-    }
+    }*/
 
     public void deleteAll(){
+
         userRepository.deleteDataUsers();
     }
 
 
     public LiveData<List<Users>> getAllUsers(){
+
         return listUsers;
     }
 
     public LiveData<List<Users>> getListUserDetailsAPI(){
+
 
         listUserDetailsAPI=userRepository.getUsersREST();
         return listUserDetailsAPI;
